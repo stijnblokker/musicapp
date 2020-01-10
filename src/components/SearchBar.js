@@ -24,7 +24,7 @@ const SearchBar = () => {
                         payload: similarArtists
                     }
                 )
-                console.log(similarArtists);
+                // console.log(similarArtists);
             })
             .catch(console.error)
     }

@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 
 import SearchBar from './components/SearchBar'
 import SearchResult from './components/SearchResult'
-import Playlist from './components/Playlist';
+// import Playlist from './components/Playlist';
 
 export const music = createContext('music')
 export const video = createContext('playlist')
@@ -12,38 +12,30 @@ const listReducer = (state, action) => {
   switch (action.type) {
     case 'ADD':
       console.log('ADDING');
-      return action.payload
+      return action.payload.map(artist => {
+        return {
+          id: artist.mbid,
+          name: artist.name,
+          selected: false
+        }
+      })
     case 'SELECT':
-      const { mbid, name, url } = action.payload
-      let addToState
-      if (action.payload.selected) {
-        addToState = {
-          mbid, name, url,
-          selected: !action.payload.selected
-        }
-      } else {
-        addToState = {
-          mbid, name, url,
-          selected: true
-        }
-      }
-      console.log(addToState);
-      return [...state.filter((artist) => artist.mbid !== mbid), addToState]
+        return state.map ( artist => artist.id === action.payload ? { ...artist, selected: !artist.selected } : artist)
     default:
       return state
   }
 }
 
 const App = () => {
-
   const [musicList, DispatchMusicList] = useReducer(listReducer, initialList)
+
   return (
     <music.Provider value={DispatchMusicList}>
       <SearchBar />
-      <video.Provider value={'blabla'}>
-        <SearchResult musicList={musicList} />
+      <SearchResult musicList={musicList} />
+      {/* <video.Provider value={'blabla'}>
         <Playlist />
-      </video.Provider>
+      </video.Provider> */}
     </music.Provider>
   );
 }
