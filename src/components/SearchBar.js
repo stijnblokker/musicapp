@@ -3,7 +3,7 @@ import request from 'superagent'
 
 import { music } from '../App'
 
-const SearchBar = () => {
+const SearchBar = ( {page} ) => {
     const dispatch = useContext(music)
 
     const [artist, setArtist] = useState("nirvana")
@@ -24,16 +24,20 @@ const SearchBar = () => {
                         payload: similarArtists
                     }
                 )
+                page({type: 'SIMILAR'})
             })
             .catch(console.error)
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <br />
-            <input name="artist" value={artist} onChange={handleChange} placeholder="type your artist here" />
-            <button type="submit"> Show results! </button>
-        </form>
+        <div>
+            <h1>Find similar artists</h1>
+            <form onSubmit={handleSubmit}>
+                <p>Fill in an artist in the form below to find similar artists: </p> 
+                <input name="artist" value={artist} onChange={handleChange} placeholder="type your artist here" />
+                <button type="submit"> Show results! </button>
+            </form>
+        </div>
     )
 }
 

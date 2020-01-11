@@ -1,15 +1,44 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from 'styled-components';
+import search from 'youtube-search';
 
 import { music } from '../App'
 
-const SearchResult = ({ musicList }) => {
-    const dispatchArtists = useContext(music)
+const SearchResult = ({ musicList, page }) => {
+    const dispatch = useContext(music)
+    const [generate, setGenerate] = useState(false)
 
     const onClickArtist = (id) => {
-        dispatchArtists({
+        dispatch({
             type: 'SELECT_ARTISTS',
             payload: id
+        })
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setGenerate(true)
+        const selectedArtists = musicList.filter((artist) => {
+            return artist.selected === true
+        })
+
+        // HERE COMES THE CALL TO THE YOUTUBE API
+        const opts = {
+            maxResults: 10,
+            key: 'AIzaSyCw32VxdRu5BMNv1TTbG-RMgA1-c7d8u7E'
+        };
+        selectedArtists.map((artist) => {
+            search(artist.name, opts, function (err, results) {
+                if (err) return console.log(err);
+                dispatch({
+                    type: 'ADD_VIDEO',
+                    payload: {
+                        id: artist.id,
+                        videos: results.filter((video) => video.kind === 'youtube#video')
+                    }
+                })
+                page({ type: 'VIDEO' })
+            });
         })
     }
 
@@ -19,7 +48,8 @@ const SearchResult = ({ musicList }) => {
     if (musicList) {
         return (
             <div className="container">
-                <h3>RESULT</h3>
+                <h3>Similar Artist</h3>
+                <p> select artist that you want to hear: </p>
                 <ul>
                     {musicList
                         .map((artist) => {
@@ -33,6 +63,13 @@ const SearchResult = ({ musicList }) => {
                         })
                     }
                 </ul>
+                <div>
+                    <form onSubmit={handleSubmit}>
+                        <p> click to generate playlist</p>
+                        <button type="submit"> Show videos</button>
+                    </form>
+                </div>
+                <button onClick={() => page({ type: 'SEARCH'})}> Back to search </button>
             </div>
         )
     }
