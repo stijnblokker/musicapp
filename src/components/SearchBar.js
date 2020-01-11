@@ -6,7 +6,7 @@ import { music } from '../App'
 const SearchBar = () => {
     const dispatch = useContext(music)
 
-    const [artist, setArtist] = useState("")
+    const [artist, setArtist] = useState("nirvana")
 
     const handleChange = (event) => {
         setArtist(event.target.value)
@@ -20,11 +20,10 @@ const SearchBar = () => {
                 const similarArtists = response.body.similarartists.artist
                 dispatch(
                     {
-                        type: 'ADD',
+                        type: 'ADD_ARTISTS',
                         payload: similarArtists
                     }
                 )
-                // console.log(similarArtists);
             })
             .catch(console.error)
     }
