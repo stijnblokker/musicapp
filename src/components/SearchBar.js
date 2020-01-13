@@ -31,7 +31,7 @@ const SearchBar = ( {page} ) => {
 
     return (
         <div>
-            <h1>Find similar artists</h1>
+            <h3>Find similar artists</h3>
             <form onSubmit={handleSubmit}>
                 <p>Fill in an artist in the form below to find similar artists: </p> 
                 <input name="artist" value={artist} onChange={handleChange} placeholder="type your artist here" />

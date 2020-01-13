@@ -1,15 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled from 'styled-components';
 import search from 'youtube-search';
 
-import { music } from '../App'
+import { music, video } from '../App'
 
 const SearchResult = ({ musicList, page }) => {
-    const dispatch = useContext(music)
-    const [generate, setGenerate] = useState(false)
+    const dispatchMusic = useContext(music)
+    const dispatchVideo = useContext(video)
 
     const onClickArtist = (id) => {
-        dispatch({
+        dispatchMusic({
             type: 'SELECT_ARTISTS',
             payload: id
         })
@@ -17,24 +17,34 @@ const SearchResult = ({ musicList, page }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setGenerate(true)
         const selectedArtists = musicList.filter((artist) => {
             return artist.selected === true
         })
 
-        // HERE COMES THE CALL TO THE YOUTUBE API
         const opts = {
             maxResults: 10,
-            key: 'AIzaSyCw32VxdRu5BMNv1TTbG-RMgA1-c7d8u7E'
+            key: 'AIzaSyCw32VxdRu5BMNv1TTbG-RMgA1-c7d8u7E' // MAKE ENV VARIABLE !!!!!!!!
         };
+
+        // dispatchVideo({type: 'ADD_VIDEO', payload: ["uAE6Il6OTcs", "3mbBbFH9fAg", "cH_rfGBwamc", "yjJL9DGU7Gg", "MnB7zNrnRqk", "m3P6K4w1MQ4"] })
         selectedArtists.map((artist) => {
-            search(artist.name, opts, function (err, results) {
+            return search(`${artist.name} music`, opts, function (err, results) {
                 if (err) return console.log(err);
-                dispatch({
+                console.log(results);
+                dispatchVideo({
                     type: 'ADD_VIDEO',
                     payload: {
                         id: artist.id,
-                        videos: results.filter((video) => video.kind === 'youtube#video')
+                        artist: artist.name,
+                        videos: results
+                            .filter((video) => video.kind === 'youtube#video')
+                            .map((video) => {
+                                return {
+                                    id: video.id,
+                                    title: video.title,
+                                    thumbnails: video.thumbnails
+                                }
+                            })
                     }
                 })
                 page({ type: 'VIDEO' })
@@ -45,35 +55,32 @@ const SearchResult = ({ musicList, page }) => {
     const Artist = styled.li`
     background: ${props => props.selected ? "green" : "white"};`
 
-    if (musicList) {
-        return (
-            <div className="container">
-                <h3>Similar Artist</h3>
-                <p> select artist that you want to hear: </p>
-                <ul>
-                    {musicList
-                        .map((artist) => {
-                            return <Artist
-                                key={artist.id}
-                                onClick={() => onClickArtist(artist.id)}
-                                selected={artist.selected === true ? true : false}
-                            >
-                                {artist.name}
-                            </Artist>
-                        })
-                    }
-                </ul>
-                <div>
-                    <form onSubmit={handleSubmit}>
-                        <p> click to generate playlist</p>
-                        <button type="submit"> Show videos</button>
-                    </form>
-                </div>
-                <button onClick={() => page({ type: 'SEARCH'})}> Back to search </button>
+    return (
+        <div className="container">
+            <h3>Similar Artist</h3>
+            <p> select artist that you want to hear: </p>
+            <ul>
+                {musicList
+                    .map((artist) => {
+                        return <Artist
+                            key={artist.id}
+                            onClick={() => onClickArtist(artist.id)}
+                            selected={artist.selected === true ? true : false}
+                        >
+                            {artist.name}
+                        </Artist>
+                    })
+                }
+            </ul>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <p> click to generate playlist</p>
+                    <button type="submit"> Show videos</button>
+                </form>
             </div>
-        )
-    }
-    return 'No artists to show'
+            <button onClick={() => page({ type: 'SEARCH' })}> Re-search </button>
+        </div>
+    )
 }
 
 export default SearchResult

@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useState } from 'react';
+import React, { createContext, useReducer } from 'react';
 import './index.css';
 
 import SearchBar from './components/SearchBar'
@@ -6,8 +6,11 @@ import SearchResult from './components/SearchResult'
 import Playlist from './components/Playlist'
 
 export const music = createContext('music')
-export const page = createContext('page')
+export const video = createContext('video')
+// export const page = createContext('page')
 
+
+// CREATE THE LIST WITH ALL THE ARTISTS
 const initialMusicList = null
 const musicListReducer = (state, action) => {
   switch (action.type) {
@@ -17,20 +20,47 @@ const musicListReducer = (state, action) => {
           id: artist.mbid,
           name: artist.name,
           selected: false,
-          videoSelected: true,
-          videoLink: []
+          // showVideo: true,
+          // videoSelected: 0,
+          // videoLink: []
         }
       })
     case 'SELECT_ARTISTS':
       return state.map(artist => artist.id === action.payload ? { ...artist, selected: !artist.selected } : artist)
-    case 'ADD_VIDEO':
-      const { id, videos } = action.payload
-      return state.map(artist => artist.id === id ? artist.videoLink !== 0 ? { ...artist, videoLink: videos.map((video) => video.id) } : artist : artist)
     default:
       return state
   }
 }
 
+// CREATES A LIST WITH ALL THE VIDEOS
+const initialVideoList = []
+const videoListReducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_VIDEO':
+      return [...state, {
+        id: action.payload.id,
+        artist: action.payload.artist,
+        showVideo: true,
+        videoSelected: 0,
+        videos: action.payload.videos
+      }]
+    case 'CHANGE_VIDEO':
+      return state.map(artist => {
+        return artist.id === action.payload ?
+          artist.videoSelected < artist.videos.length - 1 ?
+            { ...artist, videoSelected: artist.videoSelected + 1 }
+            : { ...artist, videoSelected: 0 }
+          : artist
+      })
+    // case 'DELETE_VIDEO':
+    //   console.log('delete video');
+    //   return state
+    default:
+      return state
+  }
+}
+
+// NAVIGATION - WHICH PAGE TO SHOW
 const initialPage = { search: true, similar: false, video: false }
 const pageReducer = (state, action) => {
   switch (action.type) {
@@ -47,17 +77,23 @@ const pageReducer = (state, action) => {
 
 const App = () => {
   const [musicList, dispatchMusicList] = useReducer(musicListReducer, initialMusicList)
+  const [videoList, dispatchVideoList] = useReducer(videoListReducer, initialVideoList)
   const [page, dispatchPage] = useReducer(pageReducer, initialPage)
-  console.log(page);
+
 
   return (
-    // <page.Provider value={dispatchPage}>
-    <music.Provider value={dispatchMusicList}>
-      {page.search && <SearchBar page={dispatchPage} />}
-      {page.similar && <SearchResult musicList={musicList} page={dispatchPage} />}
-      {page.video && <Playlist musicList={musicList} page={dispatchPage} />}
-    </music.Provider>
-    // </page.Provider>
+    <div>
+      {/* <page.Provider value={dispatchPage}> */}
+      <music.Provider value={dispatchMusicList}>
+        <video.Provider value={dispatchVideoList}>
+        <h1>Similar Music Finder</h1>
+          {page.search && <SearchBar page={dispatchPage} />}
+          {page.similar && <SearchResult musicList={musicList} page={dispatchPage} />}
+        {page.video && <Playlist videoList={videoList} page={dispatchPage} />}
+        </video.Provider>
+      </music.Provider>
+      {/* </page.Provider> */}
+    </div>
   );
 }
 
