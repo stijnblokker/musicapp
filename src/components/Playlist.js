@@ -1,83 +1,92 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components';
-import search from 'youtube-search';
 
-import { music } from '../App'
+// import Player from './Player'
+import { video } from '../App'
 
-const Playlist = ({ musicList, page }) => {
-    const dispatchVideo = useContext(music)
-    // const [generate, setGenerate] = useState(false)
+const Playlist = ({ videoList, page }) => {
+    const dispatch = useContext(video)
+    const [showPlaylist, setShowPlaylist] = useState(false)
 
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     setGenerate(true)
-    //     const selectedArtists = musicList.filter((artist) => {
-    //         return artist.selected === true
-    //     })
+    const Artist = styled.li`
+    background: ${props => props.show ? "green" : "white"};`
 
-    //     // HERE COMES THE CALL TO THE YOUTUBE API
-    //     const opts = {
-    //         maxResults: 10,
-    //         key: 'AIzaSyCw32VxdRu5BMNv1TTbG-RMgA1-c7d8u7E'
-    //     };
-    //     selectedArtists.map((artist) => {
-    //         search(artist.name, opts, function (err, results) {
-    //             if (err) return console.log(err);
-    //             dispatchVideo({
-    //                 type: 'ADD_VIDEO',
-    //                 payload: {
-    //                     id: artist.id,
-    //                     videos: results.filter((video) => video.kind === 'youtube#video')
-    //                 }
-    //             })
-    //         });
-    //     })
-    // }
-
-    const onClickVideo = (id) => {
-        dispatchVideo({
-            type: 'SELECT_VIDEO',
+    const selectOtherVideo = (id) => {
+        dispatch({
+            type: 'CHANGE_VIDEO',
             payload: id
         })
     }
 
-    const Artist = styled.li`
-    background: ${props => props.selected ? "green" : "white"};`
+    const playlist = videoList
+        .reduce((url, currentVideo) => {
+            console.log('playlistvideo', currentVideo);
+            
+            if (url.length === 0) {
+                return `${currentVideo.videos[currentVideo.videoSelected].id}?playlist=`
+            }
+            return url + `${currentVideo.videos[currentVideo.videoSelected].id},`
+        }, "")
+        .slice(0, -1)
 
+    console.log(playlist);
+    
     return (
         <div>
-            <h3>Videos</h3>
             <ul>
-                {musicList
-                    .filter((artist) => artist.selected === true)
-                    .map((artist) => {
-                        console.log('videoLink', artist.videoLink);
-                        return <Artist
-                            key={artist.id}
-                            onClick={() => onClickVideo(artist.id)}
-                            selected={artist.videoSelected === true ? true : false}
-                        >
-                            <iframe src={`https://www.youtube.com/embed/${artist.videoLink[0]}`} />
-                        </Artist>
+                {videoList
+                    .map((video) => {
+                        return (
+                            <li key={video.id}> <h3>{video.artist}</h3>
+                                <img src={video.videos[video.videoSelected].thumbnails.default.url} width="120px" heigh="90px" />
+                                {video.videos[video.videoSelected].title}
+                                <br />
+                                <button onClick={() => selectOtherVideo(video.id)}> try another video </button>
+                            </li>
+                        )
+                        // <Player artist={artist} />
+                        // <Artist
+                        //     key={artist.id}
+                        //     show={artist.showVideo === true ? true : false}
+                        // > <h4>{artist.name}</h4>
+                        //     <iframe src={`https://www.youtube.com/embed/${artist.videoLink[artist.videoSelected]}`} />
+                        //     <br />
+                        // </Artist>
                     })
                 }
             </ul>
-            {/* <button> Back to search </button> */}
-            <button onClick={() => page({ type: 'SEARCH'})}> Back to search </button>
-            {/* <button> Back to similar artists </button> */}
-            <button onClick={() => page({ type: 'SIMILAR'})}> Back to similar artists </button>
+            <button onClick={() => setShowPlaylist(true)}> Show playlist </button>
+            {showPlaylist && <iframe width="560" height="315" src={`http://www.youtube.com/embed/${playlist}`} frameborder="0" allowfullscreen />}
         </div>
     )
-    // } else if (musicList) {
-    //     return (
-    //         <div>
-    //             <form onSubmit={handleSubmit}>
-    //                 <p> click to generate playlist</p>
-    //             </form>
-    //         </div>
-    //     )
-    // }
-    return 'no playlist to show'
+
+    // return (
+    //     <div>
+    //         <h3>Videos</h3>
+    // <ul>
+    //     {musicList
+    //         .filter((artist) => artist.selected === true)
+    //         .reduce((full, artist) => {
+    //             return queue += `,${artist}`
+    //         })
+    //         .map((artist) => {
+    //             console.log('artist', artist, 'length', artist.videoLink.length);
+    //             return
+    //             // <Player artist={artist} />
+    //             // <Artist
+    //             //     key={artist.id}
+    //             //     show={artist.showVideo === true ? true : false}
+    //             // > <h4>{artist.name}</h4>
+    //             //     <iframe src={`https://www.youtube.com/embed/${artist.videoLink[artist.videoSelected]}`} />
+    //             //     <br />
+    //             //     <button onClick={() => selectOtherVideo(artist.id)}> try another video </button>
+    //             // </Artist>
+    //         })
+    //     }
+    // </ul>
+    //         <button onClick={() => page({ type: 'SEARCH' })}> Reset & search again </button>
+    //     </div>
+    // )
 }
 
 export default Playlist
