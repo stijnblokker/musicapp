@@ -19,10 +19,7 @@ const musicListReducer = (state, action) => {
         return {
           id: artist.mbid,
           name: artist.name,
-          selected: false,
-          // showVideo: true,
-          // videoSelected: 0,
-          // videoLink: []
+          selected: false
         }
       })
     case 'SELECT_ARTISTS':
@@ -52,9 +49,29 @@ const videoListReducer = (state, action) => {
             : { ...artist, videoSelected: 0 }
           : artist
       })
-    // case 'DELETE_VIDEO':
-    //   console.log('delete video');
-    //   return state
+    case 'CHANGE_ORDER':
+      const { id, direction } = action.payload
+      let position = state.findIndex((video) => video.id === id)
+      console.log('position', position);
+      console.log('length of list', state.length);
+      if (position < 0 || (position >= state.length - 1 && direction === 1) || (position <= 0 && direction === -1)) {
+        console.log('kan niet schuiven');
+        return state
+      }
+      const stateCopy = [...state]
+      console.log(stateCopy);
+      const movingVideo = stateCopy[position] // copy
+      console.log('movingVideo', movingVideo);
+      const newOrder = stateCopy.filter(video => video.id != id)
+      newOrder.splice(position + direction, 0, movingVideo)
+      console.log('final state', newOrder);
+      return newOrder
+    case 'HIDE_VIDEO':
+      return state.map(artist => {
+        return artist.id === action.payload.id ?
+          { ...artist, showVideo: !artist.showVideo }
+          : artist
+      })
     default:
       return state
   }
@@ -86,10 +103,10 @@ const App = () => {
       {/* <page.Provider value={dispatchPage}> */}
       <music.Provider value={dispatchMusicList}>
         <video.Provider value={dispatchVideoList}>
-        <h1>Similar Music Finder</h1>
+          <h1>Similar Music Finder</h1>
           {page.search && <SearchBar page={dispatchPage} />}
           {page.similar && <SearchResult musicList={musicList} page={dispatchPage} />}
-        {page.video && <Playlist videoList={videoList} page={dispatchPage} />}
+          {page.video && <Playlist videoList={videoList} page={dispatchPage} />}
         </video.Provider>
       </music.Provider>
       {/* </page.Provider> */}

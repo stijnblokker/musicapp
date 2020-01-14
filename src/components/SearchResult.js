@@ -26,7 +26,6 @@ const SearchResult = ({ musicList, page }) => {
             key: 'AIzaSyCw32VxdRu5BMNv1TTbG-RMgA1-c7d8u7E' // MAKE ENV VARIABLE !!!!!!!!
         };
 
-        // dispatchVideo({type: 'ADD_VIDEO', payload: ["uAE6Il6OTcs", "3mbBbFH9fAg", "cH_rfGBwamc", "yjJL9DGU7Gg", "MnB7zNrnRqk", "m3P6K4w1MQ4"] })
         selectedArtists.map((artist) => {
             return search(`${artist.name} music`, opts, function (err, results) {
                 if (err) return console.log(err);
