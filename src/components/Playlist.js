@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
+import styled from 'styled-components';
 
-// import Player from './Player'
 import { video } from '../App'
 
 const Playlist = ({ videoList, page }) => {
@@ -31,28 +31,33 @@ const Playlist = ({ videoList, page }) => {
         }, "")
         .slice(0, -1)
 
+        const Artist = styled.li`
+        opacity: ${props => props.show ? 1 : 0.2};`
+
     return (
-        <div>
-            <ul>
+        <div className="main">
+            <h3>Step 3. Select video's that you want to put in the playlist</h3>
+            <div className="videolist">
+                <hr />
                 {videoList
                     .map((video) => {
                         return (
-                            <li key={video.id}> <h3>{video.artist}</h3>
-                                <img src={video.videos[video.videoSelected].thumbnails.default.url} width="120px" heigh="90px" alt={`cover of ${video.artist}`} />
+                            <Artist className="videoItem" key={video.id} show={video.showVideo === true ? true : false}> <h3>{video.artist}</h3>
+                                <img src={video.videos[video.videoSelected].thumbnails.default.url} alt={`cover of ${video.artist}`} />
                                 {video.videos[video.videoSelected].title}
                                 <br />
-                                <button onClick={() => selectOtherVideo(video.id)}> try another video </button>
-                                <button onClick={() => changeOrder(video.id, -1)}> MOVE UP </button>
-                                <button onClick={() => changeOrder(video.id, 1)}> MOVE DOWN </button>
-                                <button onClick={() => hideVideo(video.id)}> Hide video </button>
-                            </li>
+                                <button className="smallbutton try" onClick={() => selectOtherVideo(video.id)}> Change video </button>
+                                <button className="smallbutton up" onClick={() => changeOrder(video.id, -1)}></button>
+                                <button className="smallbutton down" onClick={() => changeOrder(video.id, 1)}> </button>
+                                <button className="smallbutton hide" onClick={() => hideVideo(video.id)}> Hide video </button>
+                            </Artist>
                         )
                     })
                 }
-            </ul>
-            {!showPlaylist && <button onClick={() => setShowPlaylist(true)}> Show playlist </button>}
-            {showPlaylist && <iframe width="560" height="315" src={`http://www.youtube.com/embed/${playlist}`} frameborder="0" allowfullscreen title="playlist" />}
-            <br /><button onClick={() => page({ type: 'SEARCH' })}> search again (your videos are saved) </button>
+            </div>
+            {!showPlaylist && <button onClick={() => setShowPlaylist(true)}> Show playlist </button>} || 
+            {showPlaylist && <iframe width="560" height="315" src={`http://www.youtube.com/embed/${playlist}`} frameBorder="0" allowFullScreen title="playlist" />}
+            <button onClick={() => page({ type: 'SEARCH' })}> search again (your videos are saved) </button>
         </div>
     )
 
