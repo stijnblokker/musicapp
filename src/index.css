@@ -1,13 +1,163 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* background-color: ivory; */
+    background-color: rgba(255, 137, 94);
+    margin: 0px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.container {
+    /* border: 2px solid black; */
+    margin: 0px;
+}
+.header {
+    background-image: url(./img/header.jpg);
+    /* opacity:0.7; */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 100%;
+    height: 200px;
+}
+
+.subtitle {
+    background-color: black;
+    border: 3px solid black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    /* padding: 15px; */
+    width: 85%;
+    margin: auto;
+    padding: 10px;
+    margin-top: -20px;
+}
+
+.main {
+    width: 85%;
+    background-color: white;
+    margin: auto;
+    border: 3px solid black;
+    padding: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+/* .footer {
+    background-color: black;
+} */
+
+h1 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-top: 0px;
+    font-size: 45px;
+    color: white;
+    text-shadow: 5px 5px black;
+    /* text-align: center; */
+}
+
+h2 {
+    color: white;
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+input {
+    border: 1px solid black;
+    margin: 10px;
+    padding: 2px;
+    height: 25px;
+    width: 40%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    text-indent: 15px;
+}
+button {
+    border: 1px solid black;
+    margin: 2px;
+    height: 40px;   
+    width: 20%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    text-align: center;
+    background-color: rgb(64, 92, 64);
+    color: white;
+}
+button:hover {
+    background-color: green;
+    opacity: 0.6;
+    color: white;
+}
+
+hr {
+    width: 80%;
+    border: 3px, solid, black;
+}
+
+ul .artistlist {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    list-style-type: none;
+    margin: auto
+}
+
+li .artistlist {
+    min-width: 200px;
+    flex-basis: 200px auto;
+    text-align: left;
+}
+li .artistlist:hover {
+    background-color: green;
+    opacity: 0.3;
+    color: white;
+}
+
+.videolist {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    list-style-type: none;
+    margin: auto
+}
+
+.videoItem {
+    border: 1px solid black;
+   margin: 5px;
+   padding: 5px;
+    width: 33%;
+    text-align: left;
+    position: relative;
+}
+
+img {
+    width: 120px; 
+    height: 90px;
+}
+.smallbutton {
+    border: 1px solid black;
+    margin: 2px;
+    height: 25px;
+    font-size: 10px;
+}
+.up {
+    background-image: url(./img/arrow-up.png);
+    background-size: contain;
+    width: 25px;
+    position: absolute;
+    right: 40px;
+    top: 10px;
+}
+.down {
+    background-image: url(./img/arrow-down.png);
+    background-size: contain;
+    width: 25px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
