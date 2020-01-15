@@ -29,7 +29,6 @@ const SearchResult = ({ musicList, page }) => {
         selectedArtists.map((artist) => {
             return search(`${artist.name} music`, opts, function (err, results) {
                 if (err) return console.log(err);
-                console.log(results);
                 dispatchVideo({
                     type: 'ADD_VIDEO',
                     payload: {
@@ -52,16 +51,17 @@ const SearchResult = ({ musicList, page }) => {
     }
 
     const Artist = styled.li`
-    background: ${props => props.selected ? "green" : "white"};`
+    background: ${props => props.selected ? "green" : "white"};
+    color: ${props => props.selected ? "white" : "black"};`
 
     return (
-        <div className="container">
-            <h3>Similar Artist</h3>
-            <p> select artist that you want to hear: </p>
-            <ul>
+        <div className="main">
+            <h3>Step 2: Select artists that you would like to hear</h3>
+            <hr />
+            <ul classNmae="artistslist">
                 {musicList
                     .map((artist) => {
-                        return <Artist
+                        return <Artist className="artistlist"
                             key={artist.id}
                             onClick={() => onClickArtist(artist.id)}
                             selected={artist.selected === true ? true : false}
@@ -73,11 +73,10 @@ const SearchResult = ({ musicList, page }) => {
             </ul>
             <div>
                 <form onSubmit={handleSubmit}>
-                    <p> click to generate playlist</p>
-                    <button type="submit"> Show videos</button>
+                    <button type="submit">Discover!</button>|| 
+                    <button onClick={() => page({ type: 'SEARCH' })}>Search again... </button>
                 </form>
             </div>
-            <button onClick={() => page({ type: 'SEARCH' })}> Re-search </button>
         </div>
     )
 }
