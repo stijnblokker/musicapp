@@ -147,6 +147,8 @@ img {
 }
 .up {
     background-image: url(./img/arrow-up.png);
+    background-color: white;
+    border: 0px;
     background-size: contain;
     width: 25px;
     position: absolute;
@@ -155,6 +157,8 @@ img {
 }
 .down {
     background-image: url(./img/arrow-down.png);
+    background-color: white;
+    border: 0px;
     background-size: contain;
     width: 25px;
     position: absolute;
