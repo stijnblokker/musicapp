@@ -58,7 +58,7 @@ const SearchResult = ({ musicList, page }) => {
         <div className="main">
             <h3>Step 2: Select artists that you would like to hear</h3>
             <hr />
-            <ul classNmae="artistslist">
+            <ul className="artistslist">
                 {musicList
                     .map((artist) => {
                         return <Artist className="artistlist"
