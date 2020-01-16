@@ -4,8 +4,3 @@ This app searches through Last.fm to find similar artists. In the resulted list 
 
 View the website at: https://music-discovery-app.netlify.com
 [![Netlify Status](https://api.netlify.com/api/v1/badges/0f6cc7ae-8f22-4bfa-a72d-7926e891fd21/deploy-status)](https://app.netlify.com/sites/music-discovery-app/deploys)
-
-TO DO:
-- responsive css
-- styling video page incomplete
-- check if there are results or not
