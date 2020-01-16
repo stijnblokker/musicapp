@@ -23,7 +23,7 @@ const SearchResult = ({ musicList, page }) => {
 
         const opts = {
             maxResults: 10,
-            key: 'AIzaSyCw32VxdRu5BMNv1TTbG-RMgA1-c7d8u7E' // MAKE ENV VARIABLE !!!!!!!!
+            key: process.env.REACT_APP_YOUTUBE_KEY
         };
 
         selectedArtists.map((artist) => {
@@ -54,31 +54,37 @@ const SearchResult = ({ musicList, page }) => {
     background: ${props => props.selected ? "green" : "white"};
     color: ${props => props.selected ? "white" : "black"};`
 
-    return (
-        <div className="main">
-            <h3>Step 2: Select artists that you would like to hear</h3>
-            <hr />
-            <ul className="artistslist">
-                {musicList
-                    .map((artist) => {
-                        return <Artist className="artistlist"
-                            key={artist.id}
-                            onClick={() => onClickArtist(artist.id)}
-                            selected={artist.selected === true ? true : false}
-                        >
-                            {artist.name}
-                        </Artist>
-                    })
-                }
-            </ul>
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <button type="submit">Discover!</button>|| 
+    if (musicList.length !== 0) {
+        return (
+            <div className="main">
+                <h3>Step 2: Select artists that you would like to hear</h3>
+                <hr />
+                <ul className="artistslist">
+                    {musicList
+                        .map((artist) => {
+                            return <Artist className="artistitem"
+                                key={artist.id}
+                                onClick={() => onClickArtist(artist.id)}
+                                selected={artist.selected === true ? true : false}
+                            >
+                                {artist.name}
+                            </Artist>
+                        })
+                    }
+                </ul>
+                <div>
+                    <form onSubmit={handleSubmit}>
+                        <button type="submit">Discover!</button>||
                     <button onClick={() => page({ type: 'SEARCH' })}>Search again... </button>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
+    return (<div className="main">
+        <p>Your search didn't give us any result :( Perhaps you made a typo? </p>
+        <button onClick={() => page({ type: 'SEARCH' })}>Search again... </button>
+    </div>)
 }
 
 export default SearchResult

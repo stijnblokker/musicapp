@@ -13,7 +13,7 @@ const SearchBar = ({ page }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        request(`http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${artist}&api_key=0b9d436b2e0c7b005f0438308d913504&format=json`)
+        request(`https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${artist}&api_key=${process.env.REACT_APP_LASTFM_KEY}&format=json`)
             .then(response => {
                 const similarArtists = response.body.similarartists.artist
                 dispatch(
@@ -34,7 +34,7 @@ const SearchBar = ({ page }) => {
                 <hr />
                 <form onSubmit={handleSubmit}>
                     {/* <p>Fill in an artist in the form below to find similar artists: </p> */}
-                    <input name="artist" value={artist} onChange={handleChange} placeholder="type your artist here" /> <br />
+                    <input name="artist" value={artist} onChange={handleChange} placeholder="type here" /> <br />
                     <button type="submit"> Show results! </button>
                 </form>
             </div>
