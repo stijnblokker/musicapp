@@ -34,7 +34,7 @@ const SearchBar = ({ page }) => {
                 <hr />
                 <form onSubmit={handleSubmit}>
                     {/* <p>Fill in an artist in the form below to find similar artists: </p> */}
-                    <input name="artist" value={artist} onChange={handleChange} placeholder="type your artist here" /> <br />
+                    <input name="artist" value={artist} onChange={handleChange} placeholder="type here" /> <br />
                     <button type="submit"> Show results! </button>
                 </form>
             </div>

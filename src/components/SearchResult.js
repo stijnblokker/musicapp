@@ -62,7 +62,7 @@ const SearchResult = ({ musicList, page }) => {
                 <ul className="artistslist">
                     {musicList
                         .map((artist) => {
-                            return <Artist className="artistlist"
+                            return <Artist className="artistitem"
                                 key={artist.id}
                                 onClick={() => onClickArtist(artist.id)}
                                 selected={artist.selected === true ? true : false}
