@@ -58,7 +58,7 @@ const Playlist = ({ videoList, page }) => {
                 </div>
                 {!showPlaylist && <button onClick={() => setShowPlaylist(true)}> Create playlist </button>}
                 {!showPlaylist &&  ' ||'}
-            {showPlaylist && <iframe width="560" height="315" src={`http://www.youtube.com/embed/${playlist}`} frameBorder="0" allowFullScreen title="playlist" />}
+            {showPlaylist && <iframe width="560" height="315" src={`https://www.youtube.com/embed/${playlist}`} frameBorder="0" allowFullScreen title="playlist" />}
                 <button onClick={() => page({ type: 'SEARCH' })}> search again*</button>
                     <p className="note">*Your videos will still be here when you come back</p>
             </div>
