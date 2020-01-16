@@ -61,7 +61,10 @@ h2 {
 h3 {
     text-align: center;
 }
-
+h4 {
+    font-size: 16px;
+    margin: 1px
+}
 input {
     border: 1px solid black;
     margin: 10px;
@@ -69,16 +72,16 @@ input {
     height: 25px;
     width: 40%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;
-    text-indent: 15px;
+    font-size: 14px;
+    text-indent: 5px;
 }
 button {
     border: 1px solid black;
     margin: 2px;
     height: 40px;   
-    width: 20%;
+    /* width: auto, 20%; */
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;
+    font-size: 14px;
     text-align: center;
     background-color: rgb(64, 92, 64);
     color: white;
@@ -94,7 +97,7 @@ hr {
     border: 3px, solid, black;
 }
 
-ul .artistlist {
+ul {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -105,12 +108,12 @@ ul .artistlist {
     margin: auto
 }
 
-li .artistlist {
+li {
     min-width: 200px;
     flex-basis: 200px auto;
     text-align: left;
 }
-li .artistlist:hover {
+li:hover {
     background-color: green;
     opacity: 0.3;
     color: white;
@@ -118,19 +121,15 @@ li .artistlist:hover {
 
 .videolist {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    list-style-type: none;
+    flex-direction: column;
     margin: auto
 }
 
 .videoItem {
     border: 1px solid black;
-   margin: 5px;
-   padding: 5px;
-    width: 33%;
+   margin: 2px;
+   padding: 2px;
+    /* width: 100%; */
     text-align: left;
     position: relative;
 }
@@ -138,6 +137,8 @@ li .artistlist:hover {
 img {
     width: 120px; 
     height: 90px;
+    /* position: absolute; */
+    border: 1px solid black;
 }
 .smallbutton {
     border: 1px solid black;
@@ -153,7 +154,7 @@ img {
     width: 25px;
     position: absolute;
     right: 40px;
-    top: 10px;
+    bottom: 10px;
 }
 .down {
     background-image: url(./img/arrow-down.png);
@@ -163,5 +164,16 @@ img {
     width: 25px;
     position: absolute;
     right: 10px;
-    top: 10px;
+    bottom: 10px;
+}
+.titleVideo {
+    position: relative;
+}
+
+iframe {
+    max-width: 100%;
+}
+
+.note {
+    font-size: 10px;
 }

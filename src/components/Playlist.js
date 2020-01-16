@@ -31,7 +31,7 @@ const Playlist = ({ videoList, page }) => {
         }, "")
         .slice(0, -1)
 
-    const Artist = styled.li`
+    const Artist = styled.div`
         opacity: ${props => props.show ? 1 : 0.2};`
 
     if (videoList.length !== 0) {
@@ -43,9 +43,9 @@ const Playlist = ({ videoList, page }) => {
                     {videoList
                         .map((video) => {
                             return (
-                                <Artist className="videoItem" key={video.id} show={video.showVideo === true ? true : false}> <h3>{video.artist}</h3>
+                                <Artist className="videoItem" key={video.id} show={video.showVideo === true ? true : false}> <h4>{video.artist}</h4>
                                     <img src={video.videos[video.videoSelected].thumbnails.default.url} alt={`cover of ${video.artist}`} />
-                                    {video.videos[video.videoSelected].title}
+                                    <div className="titleVideo">{video.videos[video.videoSelected].title}</div>
                                     <br />
                                     <button className="smallbutton try" onClick={() => selectOtherVideo(video.id)}> Change video </button>
                                     <button className="smallbutton up" onClick={() => changeOrder(video.id, -1)}></button>
@@ -56,9 +56,11 @@ const Playlist = ({ videoList, page }) => {
                         })
                     }
                 </div>
-                {!showPlaylist && <button onClick={() => setShowPlaylist(true)}> Show playlist </button>} ||
+                {!showPlaylist && <button onClick={() => setShowPlaylist(true)}> Create playlist </button>}
+                {!showPlaylist &&  ' ||'}
             {showPlaylist && <iframe width="560" height="315" src={`http://www.youtube.com/embed/${playlist}`} frameBorder="0" allowFullScreen title="playlist" />}
-                <button onClick={() => page({ type: 'SEARCH' })}> search again (your videos are saved) </button>
+                <button onClick={() => page({ type: 'SEARCH' })}> search again*</button>
+                    <p className="note">*Your videos will still be here when you come back</p>
             </div>
         )
     }
